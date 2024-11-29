@@ -1,51 +1,64 @@
 #include <iostream>
 
-#include <reproc++/run.hpp>
+#include <argparse/argparse.hpp>
 
-// Equivalent to reproc's run example but implemented using reproc++.
-int main(int argc, const char **argv) {
-  (void)argc;
+int main(int argc, char *argv[]) {
+  argparse::ArgumentParser program("advent_of_code");
 
-  int status = -1;
-  std::error_code ec;
+  // Subcommands
 
-  reproc::options options;
-  options.redirect.parent = true;
-  options.deadline = reproc::milliseconds(5000);
+  // Download
+  argparse::ArgumentParser download_command("download");
+  download_command.add_argument("day");
 
-  std::tie(status, ec) = reproc::run(argv + 1, options);
+  // Read
+  argparse::ArgumentParser read_command("read");
+  read_command.add_argument("day");
 
-  if (ec) {
-    std::cerr << ec.message() << std::endl;
+  // Scaffold
+  argparse::ArgumentParser scaffold_command("scaffold");
+  scaffold_command.add_argument("day");
+  scaffold_command.add_argument("-d", "--download")
+      .help("Download your input and add to the scaffolding")
+      .flag();
+  scaffold_command.add_argument("-o", "--overwrite")
+      .help("Overwrite existing files")
+      .flag();
+
+  // Solve
+  argparse::ArgumentParser solve_command("solve");
+  solve_command.add_argument("day");
+  int part = 0;
+  solve_command.add_argument("-s", "--submit")
+      .help("Submit answer for a part of a given day")
+      .store_into(part);
+
+  // All
+  argparse::ArgumentParser all_command("all");
+
+  // Time
+  argparse::ArgumentParser time_command("time");
+
+  // Today
+  argparse::ArgumentParser today_command("today");
+
+  // add args to main parser
+  program.add_subparser(download_command);
+  program.add_subparser(read_command);
+  program.add_subparser(scaffold_command);
+  program.add_subparser(solve_command);
+  program.add_subparser(all_command);
+  program.add_subparser(time_command);
+  program.add_subparser(today_command);
+
+  // Parse args and dispatch
+
+  try {
+    program.parse_args(argc, argv);
+  } catch (const std::exception &err) {
+    std::cerr << err.what() << std::endl;
+    std::cerr << program;
+    return 1;
   }
-
-  return ec ? ec.value() : status;
+  return 0;
 }
-
-// #include <cstdlib>
-// #include <fstream>
-// #include <iostream>
-// #include <reproc++/run.hpp>
-
-// int main() {
-//   // std::system("ls -l >test.txt"); // executes the UNIX command "ls -l
-//   // >test.txt" std::cout << std::ifstream("test.txt").rdbuf();
-//   reproc::run("ls -l >test.txt");
-//   std::cout << std::ifstream("test.txt").rdbuf();
-// }
-
-// // #include <iomanip>
-// // #include <iostream>
-// // #include <ranges>
-// // #include <string_view>
-
-// // int main() {
-// //   using std::operator""sv;
-// //   constexpr auto words{"Hello^_^C++^_^20^_^!"sv};
-// //   constexpr auto delim{"^_^"sv};
-
-// //   for (const auto word : std::views::split(words, delim))
-// //     // with string_view's C++23 range constructor:
-// //     std::cout << std::quoted(std::string_view(word)) << ' ';
-// //   std::cout << '\n';
-// // }

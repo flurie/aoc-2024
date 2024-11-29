@@ -12,6 +12,7 @@
     pkgs.flawfinder
 
     # C++ libs
+    pkgs.argparse
     pkgs.reproc
   ];
 
@@ -59,5 +60,4 @@
     nixfmt-rfc-style.enable = true;
   };
 
-  # See full reference at https://devenv.sh/reference/options/
 }

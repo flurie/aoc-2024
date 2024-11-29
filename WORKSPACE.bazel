@@ -3,24 +3,31 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 http_archive(
     name = "io_tweag_rules_nixpkgs",
     strip_prefix = "rules_nixpkgs-668609f0b3627751651cb325166d0e95062be3f7",
-    urls = ["https://github.com/tweag/rules_nixpkgs/archive/668609f0b3627751651cb325166d0e95062be3f7.tar.gz"]
+    urls = ["https://github.com/tweag/rules_nixpkgs/archive/668609f0b3627751651cb325166d0e95062be3f7.tar.gz"],
 )
 
 load("@io_tweag_rules_nixpkgs//nixpkgs:repositories.bzl", "rules_nixpkgs_dependencies")
 
 rules_nixpkgs_dependencies()
 
-load("@io_tweag_rules_nixpkgs//nixpkgs:nixpkgs.bzl", "nixpkgs_git_repository", "nixpkgs_cc_configure", "nixpkgs_package")
+load("@io_tweag_rules_nixpkgs//nixpkgs:nixpkgs.bzl", "nixpkgs_cc_configure", "nixpkgs_git_repository", "nixpkgs_package")
 
+# necessary for compatibility with rules_nixpkgs nixpkgs_cc_configure but same version of clang
 nixpkgs_git_repository(
-    name = "nixpkgs",
-    revision = "24.05", # Same as devenv.lock
+    name = "nixpkgs-stable",
+    revision = "24.05",
+)
+
+# TODO switch to 24.11 once released
+nixpkgs_git_repository(
+    name = "nixpkgs-beta",
+    revision = "24.11-beta",
 )
 
 nixpkgs_cc_configure(
-  repository = "@nixpkgs",
-  name = "nixpkgs_config_cc",
-  cc_std = "c++2b",
+    name = "nixpkgs_config_cc",
+    cc_std = "c++2b",
+    repository = "@nixpkgs-stable",
 )
 
 http_archive(
@@ -29,14 +36,16 @@ http_archive(
     strip_prefix = "rules_cc-0.0.9",
     urls = ["https://github.com/bazelbuild/rules_cc/releases/download/0.0.9/rules_cc-0.0.9.tar.gz"],
 )
+
 load("@rules_cc//cc:repositories.bzl", "rules_cc_dependencies", "rules_cc_toolchains")
+
 rules_cc_dependencies()
+
 rules_cc_toolchains()
 
 nixpkgs_package(
     name = "reproc",
     attribute_path = "reproc",
-    repository = "@nixpkgs",
     build_file_content = """\
 load("@rules_cc//cc:defs.bzl", "cc_library")
 filegroup(
@@ -56,4 +65,26 @@ cc_library(
     strip_include_prefix = "include",
     visibility = ["//visibility:public"],
 )
-""",)
+""",
+    repository = "@nixpkgs-beta",
+)
+
+nixpkgs_package(
+    name = "argparse",
+    attribute_path = "argparse",
+    build_file_content = """\
+load("@rules_cc//cc:defs.bzl", "cc_library")
+filegroup(
+    name = "include",
+    srcs = glob(["include/**/*.h", "include/**/*.hpp"]),
+    visibility = ["//visibility:public"],
+)
+cc_library(
+    name = "argparse",
+    hdrs = [":include"],
+    strip_include_prefix = "include",
+    visibility = ["//visibility:public"],
+)
+""",
+    repository = "@nixpkgs-beta",
+)

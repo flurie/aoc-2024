@@ -1,5 +1,6 @@
 cc_binary(
     name = "main",
     srcs = ["main.cpp"],
-    deps = ["@reproc"],
+    deps = ["@argparse"],
+    visibility = ["//visibility:public"],
 )

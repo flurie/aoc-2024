@@ -1,0 +1,4 @@
+alias(
+    name = "aoc",
+    actual = "//src:main",
+)
