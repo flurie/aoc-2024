@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "src/util/cli.hpp"
+#include "src/util/cli/cli.hpp"
 #include <argparse/argparse.hpp>
 
 int main(int argc, char *argv[]) {
