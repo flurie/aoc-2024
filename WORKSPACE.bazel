@@ -12,22 +12,16 @@ rules_nixpkgs_dependencies()
 
 load("@io_tweag_rules_nixpkgs//nixpkgs:nixpkgs.bzl", "nixpkgs_cc_configure", "nixpkgs_git_repository", "nixpkgs_package")
 
-# necessary for compatibility with rules_nixpkgs nixpkgs_cc_configure but same version of clang
 nixpkgs_git_repository(
-    name = "nixpkgs-stable",
-    revision = "24.05",
-)
-
-# TODO switch to 24.11 once released
-nixpkgs_git_repository(
-    name = "nixpkgs-beta",
-    revision = "24.11-beta",
+    name = "nixpkgs",
+    revision = "release-24.11",
 )
 
 nixpkgs_cc_configure(
     name = "nixpkgs_config_cc",
-    cc_std = "c++2b",
-    repository = "@nixpkgs-stable",
+    attribute_path = "llvmPackages_19.stdenv.cc",
+    cc_std = "c++23",
+    repository = "@nixpkgs",
 )
 
 http_archive(
@@ -66,7 +60,7 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 """,
-    repository = "@nixpkgs-beta",
+    repository = "@nixpkgs",
 )
 
 nixpkgs_package(
@@ -86,11 +80,11 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 """,
-    repository = "@nixpkgs-beta",
+    repository = "@nixpkgs",
 )
 
 nixpkgs_package(
     name = "aoc-cli",
     attribute_path = "aoc-cli",
-    repository = "@nixpkgs-beta",
+    repository = "@nixpkgs",
 )

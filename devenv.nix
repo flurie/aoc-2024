@@ -1,11 +1,13 @@
 { pkgs, ... }:
 {
-  packages = [
+  packages = with pkgs.llvmPackages_19; [
     # build
     pkgs.bazel_7
+    pkgs.bazel-buildtools
 
     # LSP
-    pkgs.clang-tools
+    clang-tools
+    stdenv.cc
 
     # static analysis
     pkgs.cppcheck
