@@ -10,10 +10,6 @@
     # static analysis
     pkgs.cppcheck
     pkgs.flawfinder
-
-    # C++ libs
-    pkgs.argparse
-    pkgs.reproc
   ];
 
   git-hooks.hooks = {
