@@ -88,3 +88,9 @@ cc_library(
 """,
     repository = "@nixpkgs-beta",
 )
+
+nixpkgs_package(
+    name = "aoc-cli",
+    attribute_path = "aoc-cli",
+    repository = "@nixpkgs-beta",
+)

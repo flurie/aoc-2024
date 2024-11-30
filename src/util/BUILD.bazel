@@ -1,7 +1,7 @@
 cc_library(
     name = "cli",
     srcs = ["cli.cpp"],
-    hdrs = ["cli.h"],
+    hdrs = ["cli.hpp"],
     data = ["@aoc-cli//:bin/aoc"],
     deps = [
         "@bazel_tools//tools/cpp/runfiles",

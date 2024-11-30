@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "src/util/cli.h"
 #include <argparse/argparse.hpp>
 
 int main(int argc, char *argv[]) {
@@ -31,6 +32,7 @@ int main(int argc, char *argv[]) {
   int part = 0;
   solve_command.add_argument("-s", "--submit")
       .help("Submit answer for a part of a given day")
+      .choices(1, 2)
       .store_into(part);
 
   // All
@@ -52,9 +54,10 @@ int main(int argc, char *argv[]) {
   program.add_subparser(today_command);
 
   // Parse args and dispatch
-
   try {
     program.parse_args(argc, argv);
+    auto cliPath = aoc::cli::getCliPath(argv[0]);
+    aoc::cli::runCli(cliPath);
   } catch (const std::exception &err) {
     std::cerr << err.what() << std::endl;
     std::cerr << program;

@@ -1,6 +1,6 @@
 cc_binary(
     name = "main",
     srcs = ["main.cpp"],
-    deps = ["@argparse"],
+    deps = ["@argparse", "//src/util:cli"],
     visibility = ["//visibility:public"],
 )
