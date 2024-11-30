@@ -57,7 +57,8 @@ int main(int argc, char *argv[]) {
   try {
     program.parse_args(argc, argv);
     auto runner = aoc::cli::Runner(argv[0]);
-    runner::runCli(cliPath);
+    runner.runCli();
+    runner.runCli({"help"});
   } catch (const std::exception &err) {
     std::cerr << err.what() << std::endl;
     std::cerr << program;

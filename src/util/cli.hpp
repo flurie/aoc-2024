@@ -1,7 +1,6 @@
 #ifndef CLI_H_
 #define CLI_H_
 
-#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -14,7 +13,8 @@ class Runner {
 
 public:
   explicit Runner(std::string_view execPath);
-  int runCli(std::optional<std::vector<std::string>>);
+  int runCli();
+  int runCli(std::vector<std::string>);
 };
 std::string getCliPath(std::string_view execPath);
 } // namespace cli

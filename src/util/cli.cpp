@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <iostream>
 #include <iterator>
-#include <optional>
 #include <string>
 #include <tuple>
 #include <vector>
@@ -16,17 +15,15 @@ namespace cli {
 Runner::Runner(const std::string_view execPath)
     : cliPath(getCliPath(execPath)) {}
 
-int Runner::runCli(std::optional<std::vector<std::string>> args) {
+int Runner::runCli() { return runCli(std::vector<std::string>()); }
+int Runner::runCli(std::vector<std::string> args = std::vector<std::string>()) {
   std::string out, err;
-  auto command = std::vector<std::string>{cliPath};
-  // for (auto i : args.value())
-  //   command.push_back(i);
-  std::copy(args.value().begin(), args.value().end(),
-            std::back_inserter(command));
+  std::vector<std::string> command = {cliPath};
+  std::copy(args.begin(), args.end(), std::back_inserter(command));
   reproc::options options;
   options.redirect.parent = true;
   options.deadline = reproc::milliseconds(5000);
-  auto [status, ec] = reproc::run(args, options, reproc::sink::string(out),
+  auto [status, ec] = reproc::run(command, options, reproc::sink::string(out),
                                   reproc::sink::string(err));
 
   if (ec) {
