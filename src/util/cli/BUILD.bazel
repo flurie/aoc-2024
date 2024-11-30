@@ -1,0 +1,11 @@
+cc_library(
+    name = "cli",
+    srcs = ["cli.cpp"],
+    hdrs = ["cli.hpp"],
+    data = ["@aoc-cli//:bin/aoc"],
+    deps = [
+        "@bazel_tools//tools/cpp/runfiles",
+        "@reproc",
+    ],
+    visibility = ["//src:__subpackages__"],
+)
