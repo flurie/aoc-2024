@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "src/util/cli.h"
+#include "src/util/cli.hpp"
 #include <argparse/argparse.hpp>
 
 int main(int argc, char *argv[]) {
@@ -56,8 +56,8 @@ int main(int argc, char *argv[]) {
   // Parse args and dispatch
   try {
     program.parse_args(argc, argv);
-    auto cliPath = aoc::cli::getCliPath(argv[0]);
-    aoc::cli::runCli(cliPath);
+    auto runner = aoc::cli::Runner(argv[0]);
+    runner::runCli(cliPath);
   } catch (const std::exception &err) {
     std::cerr << err.what() << std::endl;
     std::cerr << program;

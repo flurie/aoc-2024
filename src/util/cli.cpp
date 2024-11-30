@@ -1,31 +1,28 @@
-#include "cli.h"
+#include "cli.hpp"
 
 #include "reproc++/run.hpp"
 #include "tools/cpp/runfiles/runfiles.h"
+#include <algorithm>
 #include <iostream>
+#include <iterator>
+#include <optional>
 #include <string>
-#include <system_error>
 #include <tuple>
+#include <vector>
 
 namespace aoc {
 namespace cli {
 
-std::string getCliPath(std::string execPath) {
-  using bazel::tools::cpp::runfiles::Runfiles;
-  std::string error;
-  std::unique_ptr<Runfiles> runfiles(
-      Runfiles::Create(execPath, BAZEL_CURRENT_REPOSITORY, &error));
+Runner::Runner(const std::string_view execPath)
+    : cliPath(getCliPath(execPath)) {}
 
-  if (runfiles == nullptr) {
-    std::cerr << "got error: " << error;
-    throw error;
-  }
-  return runfiles->Rlocation("aoc-cli/bin/aoc");
-}
-
-int runCli(std::string cliPath) {
+int Runner::runCli(std::optional<std::vector<std::string>> args) {
   std::string out, err;
-  std::vector<std::string> args = {cliPath};
+  auto command = std::vector<std::string>{cliPath};
+  // for (auto i : args.value())
+  //   command.push_back(i);
+  std::copy(args.value().begin(), args.value().end(),
+            std::back_inserter(command));
   reproc::options options;
   options.redirect.parent = true;
   options.deadline = reproc::milliseconds(5000);
@@ -37,6 +34,19 @@ int runCli(std::string cliPath) {
   }
 
   return ec ? ec.value() : status;
+}
+
+std::string getCliPath(std::string_view execPath) {
+  using bazel::tools::cpp::runfiles::Runfiles;
+  std::string error;
+  std::unique_ptr<Runfiles> runfiles(Runfiles::Create(
+      std::string{execPath}, BAZEL_CURRENT_REPOSITORY, &error));
+
+  if (runfiles == nullptr) {
+    std::cerr << "got error: " << error;
+    throw error;
+  }
+  return runfiles->Rlocation("aoc-cli/bin/aoc");
 }
 
 } // namespace cli
