@@ -2,3 +2,9 @@ alias(
     name = "aoc",
     actual = "//src:main",
 )
+
+# passthrough for aoc-cli binary
+alias(
+    name = "cli",
+    actual = "@aoc-cli//:bin/aoc",
+)
