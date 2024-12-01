@@ -24,7 +24,6 @@ nixpkgs_git_repository(
 
 nixpkgs_cc_configure(
     name = "nixpkgs_config_cc",
-    # attribute_path = "llvmPackages.stdenv.cc",
     cc_std = "c++2b",
     repository = "@nixpkgs-compat",
 )
@@ -80,6 +79,26 @@ filegroup(
 )
 cc_library(
     name = "argparse",
+    hdrs = [":include"],
+    strip_include_prefix = "include",
+    visibility = ["//visibility:public"],
+)
+""",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
+    name = "range-v3",
+    attribute_path = "range-v3",
+    build_file_content = """\
+load("@rules_cc//cc:defs.bzl", "cc_library")
+filegroup(
+    name = "include",
+    srcs = glob(["include/**/*.h", "include/**/*.hpp"]),
+    visibility = ["//visibility:public"],
+)
+cc_library(
+    name = "range-v3",
     hdrs = [":include"],
     strip_include_prefix = "include",
     visibility = ["//visibility:public"],

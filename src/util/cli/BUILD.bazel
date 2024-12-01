@@ -4,6 +4,7 @@ cc_library(
     hdrs = ["cli.hpp"],
     data = ["@aoc-cli//:bin/aoc"],
     deps = [
+        "//src/util/day",
         "@bazel_tools//tools/cpp/runfiles",
         "@reproc",
     ],

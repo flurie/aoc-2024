@@ -17,6 +17,8 @@ public:
   int runCli(std::vector<std::string>);
 };
 std::string getCliPath(std::string_view execPath);
+std::string joinStrings(const std::vector<std::string> &strings,
+                        const std::string &delimiter);
 } // namespace cli
 } // namespace aoc
 

@@ -1,7 +1,10 @@
 #include "day.hpp"
+#include "tools/cpp/runfiles/runfiles.h"
+#include <__format/format_functions.h>
 #include <chrono>
 #include <cstdlib>
 #include <ctime>
+#include <iostream>
 #include <string>
 
 Day::Day(int day) {
@@ -23,4 +26,18 @@ Day Day::today() {
   if (est_tm->tm_mon != 12 || est_tm->tm_mday > 25)
     throw "Today does not work, not during Advent of Code!";
   return Day(est_tm->tm_mday);
+}
+
+std::string getPuzzleForDay(Day day, std::string_view execPath) {
+  using bazel::tools::cpp::runfiles::Runfiles;
+  std::string error;
+  std::unique_ptr<Runfiles> runfiles(Runfiles::Create(
+      std::string{execPath}, BAZEL_CURRENT_REPOSITORY, &error));
+
+  if (runfiles == nullptr) {
+    std::cerr << "got error: " << error;
+    throw error;
+  }
+  return runfiles->Rlocation("_main/data/inputs/" + std::to_string(day.value) +
+                             ".txt");
 }
