@@ -1,14 +1,12 @@
 #include "cli.hpp"
 
+#include "rules_cc/cc/runfiles/runfiles.h"
 #include "src/util/day/day.hpp"
-#include "tools/cpp/runfiles/runfiles.h"
 #include <algorithm>
 #include <csignal>
 #include <cstdlib>
-#include <format>
 #include <iostream>
 #include <iterator>
-#include <numeric>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -20,16 +18,6 @@ Runner::Runner(const std::string_view execPath)
     : cliPath(getCliPath(execPath)) {}
 
 int Runner::runCli() { return runCli(std::vector<std::string>()); }
-// int Runner::runCli(std::vector<std::string> args =
-// std::vector<std::string>()) {
-//   std::string out, err;
-//   std::vector<std::string> command = {cliPath};
-//   std::copy(args.begin(), args.end(), std::back_inserter(command));
-//   reproc::options options;
-//   options.deadline = reproc::milliseconds(5000);
-//   auto [status, ec] = reproc::run(command, options);
-//   return ec ? ec.value() : status;
-// }
 int Runner::runCli(std::vector<std::string> args = std::vector<std::string>()) {
   std::vector<std::string> command = {cliPath};
   std::copy(args.begin(), args.end(), std::back_inserter(command));
@@ -39,7 +27,8 @@ int Runner::runCli(std::vector<std::string> args = std::vector<std::string>()) {
 }
 
 std::string getCliPath(std::string_view execPath) {
-  using bazel::tools::cpp::runfiles::Runfiles;
+  // using bazel::tools::cpp::runfiles::Runfiles;
+  using rules_cc::cc::runfiles::Runfiles;
   std::string error;
   std::unique_ptr<Runfiles> runfiles(Runfiles::Create(
       std::string{execPath}, BAZEL_CURRENT_REPOSITORY, &error));
@@ -51,13 +40,13 @@ std::string getCliPath(std::string_view execPath) {
   return runfiles->Rlocation("aoc-cli/bin/aoc");
 }
 
-// std::string getInputPath(Day day) {
-//   return std::format("data/inputs/{}.txt", day.value);
-// }
+std::string getInputPath(Day day) {
+  return "data/inputs/" + day.print() + ".txt";
+}
 
-// std::string getPuzzlePath(Day day) {
-//   return std::format("data/puzzles/{}.md", day.value);
-// }
+std::string getPuzzlePath(Day day) {
+  return "data/puzzles/" + day.print() + ".md";
+}
 
 std::optional<int> getYear() {
   if (const char *env_p = std::getenv("AOC_YEAR")) // flawfinder: ignore
@@ -65,13 +54,5 @@ std::optional<int> getYear() {
   return std::nullopt;
 }
 
-std::string joinStrings(const std::vector<std::string> &strings,
-                        const std::string &delimiter) {
-  return std::accumulate(
-      strings.begin() + 1, strings.end(), strings[0],
-      [&delimiter](const std::string &a, const std::string &b) {
-        return a + delimiter + b;
-      });
-}
 } // namespace cli
 } // namespace aoc

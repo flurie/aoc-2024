@@ -1,3 +1,5 @@
+# load("@rules_cc//cc:defs.bzl", "cc_library")
+
 cc_library(
     name = "cli",
     srcs = ["cli.cpp"],
@@ -5,7 +7,7 @@ cc_library(
     data = ["@aoc-cli//:bin/aoc"],
     deps = [
         "//src/util/day",
-        "@bazel_tools//tools/cpp/runfiles",
+        "@rules_cc//cc/runfiles",
         "@reproc",
     ],
     visibility = ["//src:__subpackages__"],

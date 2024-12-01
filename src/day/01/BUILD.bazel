@@ -1,9 +1,11 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary")
+
 cc_binary(
     name = "01",
     srcs = ["01.cpp", "01.hpp"],
-    data = ["//data/inputs:1.txt"],
+    data = ["//data/inputs:01.txt"],
     deps = [
         "//src/util/day",
-        "@range-v3",
+        "//src/util/user",
     ],
 )
