@@ -1,5 +1,4 @@
-#ifndef CLI_H_
-#define CLI_H_
+#pragma once
 
 #include <string>
 #include <string_view>
@@ -21,5 +20,3 @@ std::string joinStrings(const std::vector<std::string> &strings,
                         const std::string &delimiter);
 } // namespace cli
 } // namespace aoc
-
-#endif // CLI_H_

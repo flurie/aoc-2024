@@ -1,10 +1,12 @@
 #include "day.hpp"
-#include "tools/cpp/runfiles/runfiles.h"
+#include "rules_cc/cc/runfiles/runfiles.h"
 #include <__format/format_functions.h>
 #include <chrono>
 #include <cstdlib>
 #include <ctime>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <string>
 
 Day::Day(int day) {
@@ -28,16 +30,22 @@ Day Day::today() {
   return Day(est_tm->tm_mday);
 }
 
+std::string Day::print() {
+  std::ostringstream s;
+  s << std::setw(2) << std::setfill('0') << value;
+  return s.str();
+}
+
 std::string getPuzzleForDay(Day day, std::string_view execPath) {
-  using bazel::tools::cpp::runfiles::Runfiles;
+  using rules_cc::cc::runfiles::Runfiles;
+  // using bazel::tools::cpp::runfiles::Runfiles;
   std::string error;
-  std::unique_ptr<Runfiles> runfiles(Runfiles::Create(
-      std::string{execPath}, BAZEL_CURRENT_REPOSITORY, &error));
+  std::unique_ptr<Runfiles> runfiles(
+      Runfiles::Create(std::string{execPath}, "", &error));
 
   if (runfiles == nullptr) {
     std::cerr << "got error: " << error;
     throw error;
   }
-  return runfiles->Rlocation("_main/data/inputs/" + std::to_string(day.value) +
-                             ".txt");
+  return runfiles->Rlocation("_main/data/inputs/" + day.print() + ".txt");
 }

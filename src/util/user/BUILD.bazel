@@ -1,0 +1,10 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "user",
+    # add user deps here
+    deps = [
+        "@range-v3",
+    ],
+    visibility = ["//src/day:__subpackages__"],
+)

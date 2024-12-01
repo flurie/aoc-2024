@@ -1,5 +1,4 @@
-#ifndef DAY_H_
-#define DAY_H_
+#pragma once
 
 #include <string>
 class Day {
@@ -12,6 +11,6 @@ public:
   };
   friend bool operator>(const Day &l, const Day &r) { return r < l; };
   Day today();
+  std::string print();
 };
 std::string getPuzzleForDay(Day day, std::string_view execPath);
-#endif // DAY_H_
