@@ -40,8 +40,8 @@ std::string getPuzzleForDay(Day day, std::string_view execPath) {
   using rules_cc::cc::runfiles::Runfiles;
   // using bazel::tools::cpp::runfiles::Runfiles;
   std::string error;
-  std::unique_ptr<Runfiles> runfiles(
-      Runfiles::Create(std::string{execPath}, "", &error));
+  std::unique_ptr<Runfiles> runfiles(Runfiles::Create(
+      std::string{execPath}, BAZEL_CURRENT_REPOSITORY, &error));
 
   if (runfiles == nullptr) {
     std::cerr << "got error: " << error;
