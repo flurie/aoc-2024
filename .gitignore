@@ -13,3 +13,5 @@ bazel-*
 
 # nix
 result*
+
+data/**
