@@ -1,5 +1,5 @@
 #include "day.hpp"
-#include "rules_cc/cc/runfiles/runfiles.h"
+#include "tools/cpp/runfiles/runfiles.h"
 #include <__format/format_functions.h>
 #include <chrono>
 #include <cstdlib>
@@ -37,8 +37,7 @@ std::string Day::print() {
 }
 
 std::string getPuzzleForDay(Day day, std::string_view execPath) {
-  using rules_cc::cc::runfiles::Runfiles;
-  // using bazel::tools::cpp::runfiles::Runfiles;
+  using bazel::tools::cpp::runfiles::Runfiles;
   std::string error;
   std::unique_ptr<Runfiles> runfiles(
       Runfiles::Create(std::string{execPath}, "", &error));
