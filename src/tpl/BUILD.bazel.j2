@@ -1,0 +1,8 @@
+cc_binary(
+    name = "{{ "%02d"|format(day|int) }}",
+    srcs = ["{{ "%02d"|format(day|int) }}.cpp", "{{ "%02d"|format(day|int) }}.hpp"],
+    data = ["//data/inputs:{{ "%02d"|format(day|int) }}.txt"],
+    deps = [
+        "//src/util/day",
+    ],
+)
