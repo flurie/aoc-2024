@@ -4,5 +4,6 @@ cc_binary(
     data = ["//data/inputs:03.txt"],
     deps = [
         "//src/util/day",
+        "@range-v3",
     ],
 )
