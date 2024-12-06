@@ -9,8 +9,8 @@
 
 auto partOne(auto input) {
   auto r = std::regex{R"<>(mul\((\d{1,3}),(\d{1,3})\))<>"};
-  std::regex_iterator<std::string::iterator> rit(input.begin(), input.end(), r);
-  std::regex_iterator<std::string::iterator> rend;
+  std::regex_iterator<std::string::iterator> rit(input.begin(), input.end(), r),
+      rend;
   return ranges::accumulate(
       ranges::subrange(rit, rend), 0, [](const auto &acc, const auto &match) {
         return acc + std::stoi(match[1]) * std::stoi(match[2]);
@@ -19,8 +19,8 @@ auto partOne(auto input) {
 
 auto partTwo(auto input) {
   auto r = std::regex{R"<>((do\(\)|don't\(\)|mul\((\d{1,3}),(\d{1,3})\)))<>"};
-  std::regex_iterator<std::string::iterator> rit(input.begin(), input.end(), r);
-  std::regex_iterator<std::string::iterator> rend;
+  std::regex_iterator<std::string::iterator> rit(input.begin(), input.end(), r),
+      rend;
   return ranges::accumulate(ranges::subrange(rit, rend), std::pair(0, true),
                             [](const auto &acc, const auto &match) {
                               if (match[1] == "do()") {

@@ -108,6 +108,27 @@ cc_library(
 )
 
 nixpkgs_package(
+    name = "eigen",
+    attribute_path = "eigen",
+    build_file_content = """\
+load("@rules_cc//cc:defs.bzl", "cc_library")
+filegroup(
+    name = "include",
+    # eigen uses files with no extension for main libs
+    srcs = glob(["include/**/*"]),
+    visibility = ["//visibility:public"],
+)
+cc_library(
+    name = "eigen",
+    hdrs = [":include"],
+    strip_include_prefix = "include/eigen3",
+    visibility = ["//visibility:public"],
+)
+""",
+    repository = "@nixpkgs",
+)
+
+nixpkgs_package(
     name = "aoc-cli",
     attribute_path = "aoc-cli",
     repository = "@nixpkgs",
