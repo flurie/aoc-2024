@@ -1,0 +1,9 @@
+cc_binary(
+    name = "08",
+    srcs = ["08.cpp", "08.hpp"],
+    data = ["//data/inputs:08.txt"],
+    deps = [
+        "//src/util/day",
+        "@range-v3",
+    ],
+)
