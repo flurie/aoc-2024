@@ -53,15 +53,15 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1732752923,
+        "lastModified": 1734172825,
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8d3f01650b1b1876071cfd305d78d4824ea0b00e",
+        "rev": "cf14ff3b4e8e716346d6f1e8ee6d811c0c0838a7",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "staging-next",
+        "ref": "nixpkgs-24.11-darwin",
         "repo": "nixpkgs",
         "type": "github"
       }
