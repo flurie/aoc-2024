@@ -1,0 +1,28 @@
+cc_binary(
+    name = "10",
+    srcs = ["main.cpp"],
+    data = ["//data/inputs:10.txt"],
+    deps = [
+        "//src/util/day",
+        ":10_lib",
+    ],
+)
+
+cc_library(
+    name = "10_lib",
+    srcs = ["10.cpp"],
+    hdrs = ["10.hpp"],
+    # data = ["//data/inputs:10.txt"],
+    deps = [
+        "@range-v3",
+    ],
+)
+
+cc_test(
+    name = "test",
+    srcs = ["test.cpp"],
+    deps = [
+        ":10_lib",
+        "@doctest",
+    ],
+)
