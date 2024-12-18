@@ -65,6 +65,18 @@
     jinja2 "$DEVENV_ROOT/src/tpl/BUILD.bazel.j2" -D day=$1 > "src/day/$1/BUILD.bazel"
     jinja2 "$DEVENV_ROOT/src/tpl/day.cpp.j2" -D day=$1 > "src/day/$1/$1.cpp"
     jinja2 "$DEVENV_ROOT/src/tpl/day.hpp.j2" -D day=$1 > "src/day/$1/$1.hpp"
+    jinja2 "$DEVENV_ROOT/src/tpl/test.cpp.j2" -D day=$1 > "src/day/$1/test.cpp"
+    jinja2 "$DEVENV_ROOT/src/tpl/main.cpp.j2" -D day=$1 > "src/day/$1/main.cpp"
     bazel run //:cli -- download --day $1 -i data/inputs/$1.txt -p data/puzzles/$1.md --overwrite
   '';
+
+  scripts.refresh-cc.exec = ''
+    bazel run @hedron_compile_commands//:refresh_all
+  '';
+
+  scripts.submit.exec = ''
+    # args - day, part, answer
+    bazel run //:cli -- --day "$1" submit "$2" "$3"
+  '';
+
 }

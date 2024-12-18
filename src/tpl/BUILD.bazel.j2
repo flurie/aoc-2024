@@ -1,8 +1,27 @@
 cc_binary(
     name = "{{ "%02d"|format(day|int) }}",
-    srcs = ["{{ "%02d"|format(day|int) }}.cpp", "{{ "%02d"|format(day|int) }}.hpp"],
+    srcs = ["main.cpp"],
     data = ["//data/inputs:{{ "%02d"|format(day|int) }}.txt"],
     deps = [
         "//src/util/day",
+        ":{{ "%02d"|format(day|int) }}_lib",
+    ],
+)
+
+cc_library(
+    name = "{{ "%02d"|format(day|int) }}_lib",
+    srcs = ["{{ "%02d"|format(day|int) }}.cpp"],
+    hdrs = ["{{ "%02d"|format(day|int) }}.hpp"],
+    deps = [
+        "@range-v3",
+    ],
+)
+
+cc_test(
+    name = "test",
+    srcs = ["test.cpp"],
+    deps = [
+        ":{{ "%02d"|format(day|int) }}_lib",
+        "@doctest",
     ],
 )

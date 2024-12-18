@@ -9,6 +9,7 @@ TEST_CASE("part one") {
   CHECK(partOne(input) == 55312);
 }
 
+// no part two info given for tests
 // TEST_CASE("part two") {
 //   auto input = parsePuzzle(testcase);
 //   CHECK(partTwo(input) == 81);
